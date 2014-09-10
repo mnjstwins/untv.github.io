@@ -1,0 +1,30 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>UNTV - Free Your Media</title><link rel="stylesheet" href="/styles/vendor/monokai.css"><script type="text/javascript" src="/scripts/vendor/highlight.min.js"></script><link rel="stylesheet" type="text/css" href="/styles/fonts.css"><link rel="stylesheet" type="text/css" href="/styles/main.css"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-49326509-1', 'untvapp.com');
+ga('send', 'pageview');</script><script type="text/javascript" src="/scripts/vendor/jquery-2.1.0.min.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body><header id="main"><div class="dark-overlay"><h1 class="constrain"><a href="/"><img src="/assets/images/untv-logo-white.svg" alt="UNTV"></a></h1></div></header><div class="constrain"><nav class="back"><a href="/api.html">Back to Contents</a></nav><div class="markdown"><h1 id="architecture-and-the-global-menu">Architecture and the Global Menu</h1>
+<p>At it&#39;s heart, UNTV is little more than an &quot;app launcher&quot;. Really, outside of the handful of components like the <code>Player</code>, <code>Remote</code>, and <code>Notifier</code>, that UNTV exposes to extensions, the primary functionality rests upon what&#39;s called the <code>GlobalMenu</code>.</p>
+<h2 id="global-menu">Global Menu</h2>
+<p>The Global Menu is responsible for registering extensions and generating a user interface that allows for navigating and selecting one to load. In addition, the Global Menu provides a sort of context for the application. It is the equivalent of your &quot;home screen&quot; and thus it also is responsible for managing the state of things.</p>
+<h3 id="extensions">Extensions</h3>
+<p>All extensions get executed in the context of an object that is created from their <code>manifest.json</code> file. This file gets parsed and the <code>main</code> script path is replaced with the module reference returned from <code>require()</code>&#39;ing that file. All of the extensions that are non-passive (<em>see authoring-extensions.md</em>) get stored in the <code>GlobalMenu</code> . </p>
+<p>When a user selects an item from the menu interface, we:</p>
+<ul>
+<li>Lookup the extension reference by it&#39;s corresponding index</li>
+<li>Remove the artifacts of any previously loaded extension (like stylesheets)</li>
+<li>Inject any stylesheets defined in the new extension&#39;s manifest</li>
+<li>Create the <code>ExtensionEnvironment</code> object (exposes components for use by extensions)</li>
+<li>Execute the referenced extension, passing it the evironment object and close the menu</li>
+</ul>
+<h3 id="actions">Actions</h3>
+<p>There is another type of &quot;entry&quot; into the <code>GlobalMenu</code> called an <strong>action</strong>. An action is looks like another menu item for an extension, except is does not load an extension. When selected, an action simply fires a single &quot;handler&quot; function.</p>
+<p>An example of this is the &quot;Quit&quot; menu entry. It would be silly to author an extension that simple closes UNTV, which is why we have added support for these simple handlers.</p>
+<p>Currently, registering actions is not exposed as an API to developers and they are managed internally in <code>lib/menu-actions.coffee</code>.</p>
+<h2 id="words-on-architecture">Words on Architecture</h2>
+<p>This simple architecture was made the foundation of UNTV for the purpose of making it as flexible as possible. Nearly every use-case for UNTV falls under the responsibility of an <strong>extension</strong>. </p>
+<p>Now that might seem a little bit silly, considering that folks have little use for an app launcher with no apps. That is why we bundle a collection of 6 <strong>extensions</strong> that provide the functionality you would expect from a media center. This includes a video library, music player, photo gallery, settings, and an extension manager for installing new extensions. We also provide an instant streaming extension which allows you to browse and stream movies over BitTorrent which is pretty cool.</p>
+<p>Another reason I chose to build the application this way was to prove the validity of the extension API. What better way to know that extensions can be built easily and prove it than to build the app as a handful of extensions to a very simple core?</p>
+<p>These are the principles of UNTV&#39;s architecture. </p>
+</div></div><footer><div class="dark-overlay"><div class="constrain"><ul class="left"><li><a href="/api.html">API Documentation</a></li><li><a href="https://github.com/untv">Fork us on Github</a></li><li><a href="/donate.html">Support Development</a></li></ul><p class="right"><a href="https://github.com/gordonwritescode">A thing by Gordon Hall</a></p></div></div></footer></body></html>

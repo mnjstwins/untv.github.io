@@ -1,0 +1,16 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>UNTV - Free Your Media</title><link rel="stylesheet" href="/styles/vendor/monokai.css"><script type="text/javascript" src="/scripts/vendor/highlight.min.js"></script><link rel="stylesheet" type="text/css" href="/styles/fonts.css"><link rel="stylesheet" type="text/css" href="/styles/main.css"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-49326509-1', 'untvapp.com');
+ga('send', 'pageview');</script><script type="text/javascript" src="/scripts/vendor/jquery-2.1.0.min.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body><header id="main"><div class="dark-overlay"><h1 class="constrain"><a href="/"><img src="/assets/images/untv-logo-white.svg" alt="UNTV"></a></h1></div></header><div class="constrain"><nav class="back"><a href="/api.html">Back to Contents</a></nav><div class="markdown"><h1 id="notifications-api">Notifications API</h1>
+<p>UNTV employs the use of the <code>Notifier</code> class upon initialization and passes this instance to the <code>GlobalMenu</code>, which in turn hands out a reference to all the non-passive extensions. Wherever we have access to the <code>Notifier</code> instance, we can show notifications to the user.</p>
+<p>There are 2 types of notifications: standard and passive.</p>
+<p>Standard notifications steal focus from the remote, effectively blocking all user interaction until dismissed, while passive notifications simply appear and dismiss on their own and do not steal remote focus.</p>
+<h2 id="core-methods">Core Methods</h2>
+<h4 id="notifier-notify-from-content-is_passive-">notifier.notify(from, content, is_passive)</h4>
+<p>Creates and displays a notification. The <code>from</code> argument will appear as a title bar of sorts and is intended to allow you to inform the user what extension or component initiated the notification. The <code>content</code> argument should be the text/html content of the notification and the <code>is_passive</code> flag will determine how to deliver your notification.</p>
+<h4 id="notifier-dismiss-">notifier.dismiss()</h4>
+<p>Dismisses the currently active non-passive notification.</p>
+</div></div><footer><div class="dark-overlay"><div class="constrain"><ul class="left"><li><a href="/api.html">API Documentation</a></li><li><a href="https://github.com/untv">Fork us on Github</a></li><li><a href="/donate.html">Support Development</a></li></ul><p class="right"><a href="https://github.com/gordonwritescode">A thing by Gordon Hall</a></p></div></div></footer></body></html>

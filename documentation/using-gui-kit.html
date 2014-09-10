@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>UNTV - Free Your Media</title><link rel="stylesheet" href="/styles/vendor/monokai.css"><script type="text/javascript" src="/scripts/vendor/highlight.min.js"></script><link rel="stylesheet" type="text/css" href="/styles/fonts.css"><link rel="stylesheet" type="text/css" href="/styles/main.css"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-49326509-1', 'untvapp.com');
+ga('send', 'pageview');</script><script type="text/javascript" src="/scripts/vendor/jquery-2.1.0.min.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body><header id="main"><div class="dark-overlay"><h1 class="constrain"><a href="/"><img src="/assets/images/untv-logo-white.svg" alt="UNTV"></a></h1></div></header><div class="constrain"><nav class="back"><a href="/api.html">Back to Contents</a></nav><div class="markdown"><h1 id="using-the-gui-kit-to-build-extensions">Using the GUI Kit to Build Extensions</h1>
+<p>As part of the core libraries, UNTV ships with a toolkit, tentatively name 
+<code>gui-kit</code>. The GUI kit provides access to classes which help develop extensions 
+for common use cases. This toolkit gets passed to each extension, so it can be 
+used to build your extension interface.</p>
+<p>This gets passed as part of the <code>env</code> argument to your extension&#39;s main function as <code>gui</code>:</p>
+<pre><code class="lang-coffeescript"><span class="built_in">module</span>.<span class="function"><span class="title">exports</span> = <span class="params">(env)</span> -&gt;</span> <span class="built_in">console</span>.log env.gui
+</code></pre>
+<p>Each component in the GUI kit is relatively &quot;plug-and-play&quot; in that, while they 
+generally have a fairly robust API, you will likely only need to make use of a 
+few of their core methods. Only these core methods are documented here in the 
+interest of saving you from the noise of long-winded documentation.</p>
+<p>If you find yourself needing a more custom implementation then &quot;use the source 
+Luke.&quot;</p>
+<h2 id="class-navigablegrid-container-remote-config-">Class: NavigableGrid(container, remote, config)</h2>
+<p>Generates a grid of items, where each item may receive focus from the remote 
+and may be selected to perform a specified action. </p>
+<h4 id="config">Config</h4>
+<ul>
+<li>adjust_y: <code>Number</code> - See <code>SmartAdjuster</code></li>
+<li>adjust_x: <code>Number</code> - See <code>SmartAdjuster</code></li>
+<li>smart_scroll: <code>Boolean</code> - Scroll when row when reaching beginning or end of a row</li>
+<li>smart_rows: <code>Boolean</code> - Automatically size rows based on viewport size</li>
+<li>animation: <code>String</code> - Animation name to add to items (from animate.css)</li>
+</ul>
+<h4 id="events">Events</h4>
+<ul>
+<li>&quot;out_of_bounds&quot;: user attempts to move focus outside of grid </li>
+<li>&quot;item_focused&quot;: user changes focus to new item</li>
+<li>&quot;item_selected&quot;: user selects the current focused item</li>
+</ul>
+<h4 id="core-methods">Core Methods</h4>
+<h5 id="populate-data-template_fn-">populate(data, template_fn)</h5>
+<p>Populates the grid and renders the interface using <code>data</code>, which should be an <code>Array</code> of values (usually objects), to compile with the <code>template_fn</code>.</p>
+<p>The <code>template_fn</code> should be a function that is a &quot;precompiled template&quot;. An example might be the function returned from <code>jade.compile()</code> or <code>handlebars.compile()</code>.</p>
+<p>This iterates through the data, inserting the returned HTML value gained from <code>template_fn(data[i])</code> and inserting it into a generated list item element.</p>
+<h5 id="givefocus-">giveFocus()</h5>
+<p>Enables navigation of the grid, giving focus to either the item that was last focused or the first item in the grid if calling for the first time.</p>
+<h5 id="releasefocus-">releaseFocus()</h5>
+<p>Disables navigation of the grid, storing a reference to the last focused item.</p>
+<h2 id="class-navigablelist-list_element-remote-config-">Class: NavigableList(list_element, remote, config)</h2>
+<p>Converts a standard unordered list and enables navigation from the remote by 
+allowing focus and selection of each list item.</p>
+<h4 id="config">Config</h4>
+<ul>
+<li>adjust_y: <code>Number</code> - See <code>SmartAdjuster</code></li>
+<li>adjust_x: <code>Number</code> - See <code>SmartAdjuster</code></li>
+<li>smart_scroll: <code>Boolean</code> - Scroll to top/bottom of list when reaching beginning or end</li>
+<li>leave_decoration: <code>Boolean</code> - Leaves the &quot;focused&quot; class on the current item, even when focus is released from the element</li>
+</ul>
+<h4 id="events">Events</h4>
+<ul>
+<li>&quot;out_of_bounds&quot;: user attempts to move focus outside of list </li>
+<li>&quot;item_focused&quot;: user changes focus to new item</li>
+<li>&quot;item_selected&quot;: user selects the current focused item</li>
+</ul>
+<h4 id="core-methods">Core Methods</h4>
+<h5 id="givefocus-index-">giveFocus(index)</h5>
+<p>Enables navigation of the list, giving focus to either the item that was last focused, the item at the specified index, or the first item in the grid if calling for the first time.</p>
+<h5 id="releasefocus-">releaseFocus()</h5>
+<p>Disables navigation of the list.</p>
+<h5 id="lock-">lock()</h5>
+<p>Prevents giving focus to the list. Useful for asynchronous event handlers where you don&#39;t want the user to interact with the list while they are waiting.</p>
+<h5 id="unlock-">unlock()</h5>
+<p>Re-enables giving focus to the list</p>
+<h2 id="class-fileselector-container-remote-ignore_types-config-">Class: FileSelector(container, remote, ignore_types, config)</h2>
+<p>A <code>NavigableList</code> instance that is prepopulated with the file system contents. 
+The selection of an item is automatically bound to the action of loading the 
+intended directory listing. You need only to specify a container and listen for events.</p>
+<p>You can constrain which types of items show using the <code>ignore_types</code> argument. Pass an array of file extensions in the form of <code>[&quot;.txt&quot;, &quot;.jpg&quot;]</code> to exclude them from the listing. If you wish to show only directories, you can pass a wildcard as an item like <code>[&quot;*&quot;]</code>.</p>
+<h4 id="config">Config</h4>
+<ul>
+<li>initial_path: <code>String</code> - Directory path to start in. Defaults to home directory</li>
+</ul>
+<h4 id="events">Events</h4>
+<ul>
+<li>&quot;out_of_bounds&quot;: user attempts to move focus outside of list </li>
+<li>&quot;dir_selected&quot;: user selects a directory</li>
+<li>&quot;file_selected&quot;: user selects a file</li>
+</ul>
+<h4 id="core-methods">Core Methods</h4>
+<h5 id="update-path-">update(path)</h5>
+<p>Changes the contents of the instance to the specified path.</p>
+<h2 id="class-smartadjuster-target-less-_y-less-_x-">Class: SmartAdjuster(target, less_y, less_x)</h2>
+<p>Attaches a listener to the <code>window</code> for the <code>resize</code> event as well as immediately forcing a fixed position and size of 100% of the containing element minus the specified <code>less_x</code> and <code>less_y</code>.</p>
+<p>This is helpful when creating fixed sized elements for variable screen sizes based on the size of other elements.</p>
+<h2 id="class-virtualkeyboard-remote-config-">Class: VirtualKeyboard(remote, config)</h2>
+<p>Creates an on-screen keyboard that can be used to provide a way to get text input from the user.</p>
+<h4 id="config">Config</h4>
+<ul>
+<li>default: <code>String</code> - The default keyboard to show. Defaults to `alphanum&quot;</li>
+<li>allow: <code>Array</code> of <code>String</code>s - Which keyboards are allowed. Possible options:<ul>
+<li>&quot;alphanum&quot;</li>
+<li>&quot;symbols&quot;</li>
+</ul>
+</li>
+</ul>
+<h4 id="events">Events</h4>
+<ul>
+<li>&quot;input&quot;: user closes or submits data from the keyboard </li>
+</ul>
+<h4 id="core-methods">Core Methods</h4>
+<h5 id="prompt-message-callback-">prompt(message, callback)</h5>
+<p>Shows the keyboard and automatically binds a one-time event listener to the &quot;input&quot; event, calling it when the action is complete.</p>
+<h5 id="value-">value()</h5>
+<p>Returns the current value of the keyboard&#39;s input field.</p>
+</div></div><footer><div class="dark-overlay"><div class="constrain"><ul class="left"><li><a href="/api.html">API Documentation</a></li><li><a href="https://github.com/untv">Fork us on Github</a></li><li><a href="/donate.html">Support Development</a></li></ul><p class="right"><a href="https://github.com/gordonwritescode">A thing by Gordon Hall</a></p></div></div></footer></body></html>

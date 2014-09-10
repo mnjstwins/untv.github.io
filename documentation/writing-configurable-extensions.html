@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>UNTV - Free Your Media</title><link rel="stylesheet" href="/styles/vendor/monokai.css"><script type="text/javascript" src="/scripts/vendor/highlight.min.js"></script><link rel="stylesheet" type="text/css" href="/styles/fonts.css"><link rel="stylesheet" type="text/css" href="/styles/main.css"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-49326509-1', 'untvapp.com');
+ga('send', 'pageview');</script><script type="text/javascript" src="/scripts/vendor/jquery-2.1.0.min.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body><header id="main"><div class="dark-overlay"><h1 class="constrain"><a href="/"><img src="/assets/images/untv-logo-white.svg" alt="UNTV"></a></h1></div></header><div class="constrain"><nav class="back"><a href="/api.html">Back to Contents</a></nav><div class="markdown"><h1 id="writing-configurable-extensions">Writing Configurable Extensions</h1>
+<p>When building an extension, it&#39;s <code>manifest.json</code> can be defined in a way that talks to the <code>SettingsRegistry</code> (see <em>about-settings-registry.md</em>). The <code>SettingsRegistry</code> parses the <code>config</code> property in the manifest file and provides an interface for modifying the configuration properties defined.</p>
+<p>The built-in <strong>Settings &amp; Preferences</strong> extension uses the global <code>SettingsRegistry</code> to display the different extension configurations as well as allowing the user to modify them.</p>
+<h2 id="manifest-config">Manifest Config</h2>
+<p>The <code>config</code> property should always be an object. Each property corresponds to a value that, depending on it&#39;s definition, may or may not be configurable by the user and/or other extensions.</p>
+<p>A simple <code>config</code> that is static (non-configurable) might look like this:</p>
+<pre><code class="lang-json">{
+    "<span class="attribute">config</span>": <span class="value">{
+        "<span class="attribute">remember_selections</span>": <span class="value"><span class="literal">true</span></span>,
+        "<span class="attribute">default_genre</span>": <span class="value"><span class="string">"Sci-Fi"</span>
+    </span>}
+</span>}
+</code></pre>
+<p>These properties are statically configured and aren&#39;t touched by the <code>SettingsRegistry</code>. In order to allow the registry to consume and expose it&#39;s configuration interface for a given property, we set the value to an object with specific keys:</p>
+<pre><code class="lang-json">{
+    "<span class="attribute">config</span>": <span class="value">{
+        "<span class="attribute">default_genre</span>": <span class="value">{
+            "<span class="attribute">register</span>": <span class="value"><span class="literal">true</span></span>,
+            "<span class="attribute">is_toggle</span>": <span class="value"><span class="literal">false</span></span>,
+            "<span class="attribute">default</span>": <span class="value"><span class="string">"Sci-Fi"</span></span>,
+            "<span class="attribute">options</span>": <span class="value">[
+                <span class="string">"Action"</span>, <span class="string">"Adventure"</span>, <span class="string">"Biography"</span>,
+                <span class="string">"Comedy"</span>, <span class="string">"Sci-Fi"</span>, <span class="string">"Horror"</span>
+            ]</span>,
+            "<span class="attribute">description</span>": <span class="value"><span class="string">"My Favorite Genre"</span>
+        </span>}
+    </span>}
+</span>}
+</code></pre>
+<p>As seen in the example above, we have 4 keys:</p>
+<ul>
+<li><strong>register</strong> - <code>Boolean</code> indicating whether or not to register the property with the <code>SettingsRegistry</code></li>
+<li><strong>is_toggle</strong> - <code>Boolean</code> indicating whether or not this value is a simple on/off toggle (default must be a Boolean)</li>
+<li><strong>default</strong> - <code>Mixed</code> type value indicating the default setting for this property</li>
+<li><strong>options</strong> - <code>Array</code> of possible values for the property, or pass a <code>String</code> wildcard (<code>&quot;*&quot;</code>) to indicate that any string value can be set</li>
+<li><strong>description</strong> - <code>String</code> of human-friendly text describing the setting</li>
+</ul>
+<h2 id="accessing-configuration-from-extension">Accessing Configuration from Extension</h2>
+<p>When the <code>GlobalMenu</code> loads your extension, it first &quot;pre-processes&quot; your manifest&#39;s <code>config</code>. It does this by checking <code>localStorage</code> for values that are not equal the <code>default</code> specified but exist in the <code>options</code> array. When it finds one, it simply overrides the value that gets passed to the extension. If an override does not exist, it simply replaces the value with the default specified.</p>
+<p>So for instance, using the example above, I would access the value of <code>default_genre</code> like so:</p>
+<pre><code class="lang-coffeescript"><span class="built_in">module</span>.<span class="function"><span class="title">exports</span> = <span class="params">(env)</span> -&gt;</span>
+    config = env.manifest.config
+    <span class="built_in">console</span>.log config.default_genre 
+    <span class="comment"># "Sci-Fi"</span>
+</code></pre>
+</div></div><footer><div class="dark-overlay"><div class="constrain"><ul class="left"><li><a href="/api.html">API Documentation</a></li><li><a href="https://github.com/untv">Fork us on Github</a></li><li><a href="/donate.html">Support Development</a></li></ul><p class="right"><a href="https://github.com/gordonwritescode">A thing by Gordon Hall</a></p></div></div></footer></body></html>

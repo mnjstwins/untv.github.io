@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>UNTV - Free Your Media</title><link rel="stylesheet" href="/styles/vendor/monokai.css"><script type="text/javascript" src="/scripts/vendor/highlight.min.js"></script><link rel="stylesheet" type="text/css" href="/styles/fonts.css"><link rel="stylesheet" type="text/css" href="/styles/main.css"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-49326509-1', 'untvapp.com');
+ga('send', 'pageview');</script><script type="text/javascript" src="/scripts/vendor/jquery-2.1.0.min.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body><header id="main"><div class="dark-overlay"><h1 class="constrain"><a href="/"><img src="/assets/images/untv-logo-white.svg" alt="UNTV"></a></h1></div></header><div class="constrain"><nav class="back"><a href="/api.html">Back to Contents</a></nav><div class="markdown"><h1 id="extending-the-remote">Extending the Remote</h1>
+<p>All user interaction in UNTV is facilitated by use of an instance of <code>Remote</code>. 
+This instance is created in <code>src/untv.coffee</code>. Nearly all components that will 
+require any user interaction or input will likely depend upon this &quot;global&quot; 
+instance of <code>Remote</code>.</p>
+<p>The <code>Remote</code> is an <code>EventEmitter</code> and it is through it&#39;s event interface that 
+you interact with it.</p>
+<h2 id="events">Events</h2>
+<p>The <code>Remote</code> emits a standardized set of events to help you determine how to 
+properly handle user input. These events are caught and handled like so:</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> remote = <span class="keyword">new</span> Remote();
+remote.on(<span class="string">"namespace:action"</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="comment">// handle event here</span>
+});
+</code></pre>
+<p>As you can see in the example above, events are namespaced to make it clear 
+which subset of actions the event belongs to. The namespaces currently include:</p>
+<ul>
+<li>scroll</li>
+<li>go</li>
+<li>menu</li>
+<li>player</li>
+<li>prompt</li>
+<li>confirm</li>
+<li>alert</li>
+</ul>
+<h3 id="event-menu-toggle-">Event: &quot;menu:toggle&quot;</h3>
+<p>This event is fired when the user indicates they would like to toggle the 
+global menu off or on. This event is automatically handled via the <code>GlobalMenu</code> 
+instance and it is rare that you will need to handle it yourself.</p>
+<h3 id="event-go-next-">Event: &quot;go:next&quot;</h3>
+<p>This event is fired when the user indicates they would like to proceed to the 
+next in a series of options. An example of this usage is it&#39;s use in the 
+<code>VirtualKeyboard</code>, where this action triggers showing the &quot;next&quot; keyboard, as 
+in cycling through the alphanumeric keyboard to the symbols keyboard.</p>
+<h3 id="event-go-back-">Event: &quot;go:back&quot;</h3>
+<p>This event is fired when the user indicates they would like to perform the 
+opposite action of <code>go:next</code> <strong>or</strong> they would like to back out of whatever the 
+current view may be. To cite the <code>VirtualKeyboard</code> class again, this is used to 
+hide the keyboard and return to the previous state.</p>
+<h3 id="event-go-select-">Event: &quot;go:select&quot;</h3>
+<p>This event is fired when the user indicates a selection of whatver the current 
+focused item is. This is used to select a menu item, play a movie, and similar.</p>
+<h3 id="event-scroll-up-">Event: &quot;scroll:up&quot;</h3>
+<p>This event is fired when the user indicates they wish to move focus to an item 
+above the current focused item.</p>
+<h3 id="event-scroll-down-">Event: &quot;scroll:down&quot;</h3>
+<p>This event is fired when the user indicates they wish to move focus to an item 
+below the current focused item.</p>
+<h3 id="event-scroll-left-">Event: &quot;scroll:left&quot;</h3>
+<p>This event is fired when the user indicates they wish to move focus to an item 
+left of the current focused item.</p>
+<h3 id="event-scroll-right-">Event: &quot;scroll:right&quot;</h3>
+<p>This event is fired when the user indicates they wish to move focus to an item 
+right of the current focused item.</p>
+<h3 id="event-player-toggle-">Event: &quot;player:toggle&quot;</h3>
+<p>This event fires when the user wishes to pause/play the currently playing 
+media. This is handled automatically in the global <code>Player</code> instance.</p>
+<h3 id="event-player-next-">Event: &quot;player:next&quot;</h3>
+<p>This event fires when the user wishes to skip ahead in the currently playing 
+media. This is handled automatically in the global <code>Player</code> instance.</p>
+<h3 id="event-player-prev-">Event: &quot;player:prev&quot;</h3>
+<p>This event fires when the user wishes to skip back in the the currently playing 
+media. This is handled automatically in the global <code>Player</code> instance.</p>
+<h3 id="event-player-seek-">Event: &quot;player:seek&quot;</h3>
+<p>This event fires when the user wishes to specify the time in the currently 
+playing media. This is handled automatically in the global <code>Player</code> instance.</p>
+<h3 id="event-prompt-answer-">Event: &quot;prompt:answer&quot;</h3>
+<p>This event is fired as a response to a <code>remote.sockets.emit(&quot;prompt:ask&quot;)</code> 
+event sent to the Remote Interface (smartphone) and contains text data.</p>
+<h3 id="event-confirm-answer-">Event: &quot;confirm:answer&quot;</h3>
+<p>This event is fired as a response to a <code>remote.sockets.emit(&quot;confirm:ask&quot;)</code> 
+event sent to the Remote Interface (smartphone) and contains boolean data.</p>
+<h3 id="event-alert-dismissed-">Event: &quot;alert:dismissed&quot;</h3>
+<p>This event is fired as a response to a <code>remote.sockets.emit(&quot;alert:show&quot;)</code> 
+event sent to the Remote Interface (smartphone).</p>
+<h2 id="remote-interface-smartphone-">Remote Interface (Smartphone)</h2>
+<p>The UNTV <code>Remote</code> class is instantiated with a single argument which defines 
+the port on which the instance will serve the smartphone interface. If the 
+<code>Remote</code> is instantiated without this parameter it will default to <code>8080</code>.</p>
+<p>This starts a web server that is accessible via the host machine&#39;s IP address 
+and port, when your phone is connected to the same local network.</p>
+<p>When the interface is accessed via HTTP (using your phone&#39;s web browser), it 
+opens a socket connection back to the host machine to transmit events receieved 
+from the user (you), back to the originating <code>Remote</code> instance. These events 
+are essentially proxied through the <code>Remote</code> instance after filtering out any 
+non-standard events and since <code>Remote</code> is an <code>EventEmitter</code>, it simply emits 
+the same events back to the UNTV application, where they are handled by the 
+different interface components.</p>
+<p>Since using a smartphone buys us some functionality we would otherwise not have 
+using an IR remote or otherwise, the Remote Interface supports a few events 
+UNTV can actually send to <strong>it</strong>.</p>
+<p>This can be done by emitting an event from the application back to the 
+<code>sockets</code> object tied to the <code>Remote</code> instance:</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> remote = <span class="keyword">new</span> Remote(<span class="number">8080</span>)
+<span class="comment">// send alert to phone</span>
+remote.sockets.emit(<span class="string">"alert:show"</span>, {
+  message: <span class="string">"Hello, Remote Interface!"</span>
+});
+</code></pre>
+<p>All of these events should pass an object where <code>message</code> is a string that 
+should indicate to the user, what action should be taken if any.</p>
+<h3 id="event-alert-show-">Event: &quot;alert:show&quot;</h3>
+<p>Shows a notification on the remote interface similar to a traditional <code>alert</code>, 
+and emits an &quot;alert:dismissed&quot; event back to the <code>Remote</code>, when the alert is 
+dismissed.</p>
+<h3 id="event-prompt-ask-">Event: &quot;prompt:ask&quot;</h3>
+<p>Shows a text prompt on the remote interface similar to a traditional <code>prompt</code>, 
+and emits a &quot;prompt:answer&quot; event back to the <code>Remote</code>, passing along the value 
+the user entered into the prompt.</p>
+<h3 id="event-confirm-ask-">Event: &quot;confirm:ask&quot;</h3>
+<p>Shows a confirmation popup on the remote interface similar to a traditional 
+<code>confirm</code>, and emits a &quot;confirm:answer&quot; event back to the <code>Remote</code>, passing 
+along a boolean value indicating whether or not the user confirmed.</p>
+</div></div><footer><div class="dark-overlay"><div class="constrain"><ul class="left"><li><a href="/api.html">API Documentation</a></li><li><a href="https://github.com/untv">Fork us on Github</a></li><li><a href="/donate.html">Support Development</a></li></ul><p class="right"><a href="https://github.com/gordonwritescode">A thing by Gordon Hall</a></p></div></div></footer></body></html>

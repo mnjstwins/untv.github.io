@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>UNTV - Free Your Media</title><link rel="stylesheet" href="/styles/vendor/monokai.css"><script type="text/javascript" src="/scripts/vendor/highlight.min.js"></script><link rel="stylesheet" type="text/css" href="/styles/fonts.css"><link rel="stylesheet" type="text/css" href="/styles/main.css"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-49326509-1', 'untvapp.com');
+ga('send', 'pageview');</script><script type="text/javascript" src="/scripts/vendor/jquery-2.1.0.min.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body><header id="main"><div class="dark-overlay"><h1 class="constrain"><a href="/"><img src="/assets/images/untv-logo-white.svg" alt="UNTV"></a></h1></div></header><div class="constrain"><nav class="back"><a href="/api.html">Back to Contents</a></nav><div class="markdown"><h1 id="authoring-and-modifying-extensions">Authoring and Modifying Extensions</h1>
+<p>One of the key concepts I have tried to keep in mind is the way in which UNTV can be extended. UNTV comes bundled with 5 extensions (at the time of writing).</p>
+<ol>
+<li><strong>Instant Streaming</strong> - allowing for search and streaming of BitTorrent movies</li>
+<li><strong>Video Library</strong> - allowing for navigating a local directory of movies and playing them</li>
+<li><strong>Photo Slideshow</strong> - allowing for navigating a local directory of photos and viewing them</li>
+<li><strong>Extensions Manager</strong> - allowing for installing/removing/updating third party extensions</li>
+<li><strong>Settings &amp; Preferences</strong> - providing an interface for modifying configuration of UNTV and extensions</li>
+</ol>
+<p>When UNTV starts, the first thing that happens after the <code>GlobalMenu</code> is initialized is that the bundled extensions are loaded, then third party extensions are loaded from <code>~/.untv/extensions</code>. UNTV decides how to load an extension based on the <code>manifest.json</code> file located in the root of the extension directory.</p>
+<h2 id="manifest-format">Manifest Format</h2>
+<p>The manifest file must be a valid JSON document accepting the following properties:</p>
+<ul>
+<li><strong>name</strong> - <code>String</code> name to appear in the menu</li>
+<li><strong>passive</strong> - <code>Boolean</code> indicating whether or not the extension should be loaded passively</li>
+<li><strong>icon</strong> - <code>String</code> relative path to icon to use (<em>SVG recommended</em>)</li>
+<li><strong>description</strong> - <code>String</code> brief description of what the extension does (appears under name in menu)</li>
+<li><strong>main</strong> - <code>String</code> relative path to the extension&#39;s main script (more information below)</li>
+<li><strong>view</strong> - <code>String</code> relative path to the template file to render on load (before executing main script)</li>
+<li><strong>list_priority</strong> - <code>Number</code> intended index in global menu</li>
+<li><strong>stylesheets</strong> - <code>Array</code> of <code>String</code> relative paths to stylesheets to load (CSS and LESS supported)</li>
+<li><strong>config</strong> - <code>Hash</code> of your extension configuration (optional - see Using the Settings API)</li>
+<li><strong>locals</strong> - <code>Hash</code> to compile with rendered view (optional)</li>
+</ul>
+<p>Below is a sample manifest file from the instant streaming extension:</p>
+<pre><code class="lang-json">{
+  "<span class="attribute">name</span>": <span class="value"><span class="string">"Instant Streaming"</span></span>,
+  "<span class="attribute">icon</span>": <span class="value"><span class="string">"icons/icon-white.svg"</span></span>,
+  "<span class="attribute">description</span>": <span class="value"><span class="string">"Search and browse BitTorrents and stream movies."</span></span>,
+  "<span class="attribute">main</span>": <span class="value"><span class="string">"extension.coffee"</span></span>,
+  "<span class="attribute">view</span>": <span class="value"><span class="string">"view.jade"</span></span>,
+  "<span class="attribute">list_priority</span>": <span class="value"><span class="number">0</span></span>,
+  "<span class="attribute">stylesheets</span>": <span class="value">[
+    <span class="string">"styles/extension.css"</span>
+  ]</span>,
+  "<span class="attribute">config</span>": <span class="value">{
+
+  }</span>,
+  "<span class="attribute">locals</span>": <span class="value">{
+
+  }
+</span>}
+</code></pre>
+<h2 id="writing-your-extension">Writing Your Extension</h2>
+<p>When UNTV registers your extension with the GlobalMenu, the script defined as <code>&quot;main&quot;</code> in your manifest file, gets <code>require</code>&#39;d and stored in memory. When the user chooses to load your extension by selecting it from the menu, the return value of that script gets executed (this means your &quot;main&quot; module should export a function).</p>
+<p>This buys us a couple things. For starters, any code we do not include in the exported function gets executed once during registration, so this makes it easy do do any preliminary setup work (however we have minimal access to UNTV components). More importantly, the function we export gets executed <em>every time the user selects the extension</em> (and this function has access to UNTV components).</p>
+<p>Here is what a bare bones extension might look like:</p>
+<pre><code class="lang-coffeescript"><span class="comment"># gets executed once during registration</span>
+<span class="built_in">console</span>.log <span class="string">"registered my extension!"</span>
+<span class="comment"># gets executed on extension load</span>
+<span class="built_in">module</span>.<span class="function"><span class="title">exports</span> = <span class="params">(env)</span> -&gt;</span>
+  <span class="comment"># access manifest file as object literal</span>
+  config = env.manifest.config
+  <span class="comment"># access the gui kit library</span>
+  my_grid = <span class="keyword">new</span> env.gui.NavigableGrid view
+  <span class="comment"># use notification system</span>
+  env.notifier.notify env.manifest.name, <span class="string">"Loaded!"</span>, <span class="literal">yes</span>
+  <span class="comment"># access the view</span>
+  env.view.html <span class="string">"press select to watch a movie"</span>
+  <span class="comment"># access the remote emitter</span>
+  env.remote.<span class="literal">on</span> <span class="string">"go:select"</span>,<span class="function"> -&gt;</span>
+    <span class="comment"># access the global player</span>
+    env.player.play config.default_movie_path
+</code></pre>
+<h2 id="environment-object">Environment Object</h2>
+<p>You&#39;ll notice in the example above that we reference the <code>env</code> argument several times. This object gets passed to all extensions and currently exposes the following:</p>
+<ul>
+<li><code>env.manifest</code> - a parsed version of the extension&#39;s manifest file</li>
+<li><code>env.remote</code> - a reference to the global <code>Remote</code> instance (<em>see extending-the-remote.md</em>)</li>
+<li><code>env.player</code> - a reference to the global <code>Player</code> instance (<em>see sending-media-to-player.md</em>)</li>
+<li><code>env.notifier</code> - a reference to the global <code>Notifier</code> instance (<em>see showing-notifications.md</em>)</li>
+<li><code>env.view</code> - the extension&#39;s compiled view</li>
+<li><code>env.gui</code> - a reference to the GUI Kit API (<em>see Using the GUI Kit to Build Extensions</em>)</li>
+</ul>
+<h2 id="passive-extensions">Passive Extensions</h2>
+<p>In many cases, your extension may not be an &quot;application&quot; in that there is no view and no entry into <code>GlobalMenu</code> for loading your extension. This might include <strong>themes</strong> or <strong>remote interfaces</strong>.</p>
+<p>Setting the value of <code>passive</code> to <code>true</code> in your extension manifest will execute your extension code <em>once</em> upon the initial load of UNTV. A menu entry will not be created and stylesheets included in the manifest will not be purged when another extension in loaded.</p>
+<h3 id="themes">Themes</h3>
+<p>Creating a theme is easy - all you need is a valid manifest file and a stylesheet. Here is an example manifest for a theme:</p>
+<pre><code class="lang-json">{
+  "<span class="attribute">name</span>": <span class="value"><span class="string">"My Theme"</span></span>,
+  "<span class="attribute">passive</span>": <span class="value"><span class="literal">true</span></span>,
+  "<span class="attribute">stylesheets</span>": <span class="value">[
+    <span class="string">"path/to/stylesheet.css"</span>
+  ]
+</span>}
+</code></pre>
+<p>And your directory structure would look like this:</p>
+<pre><code>my_theme/
+|- manifest.json
+|- theme.css
+</code></pre><h3 id="tweaks-and-remote-interfaces">Tweaks and Remote Interfaces</h3>
+<p>Other passive extensions might seek to modify or embellish the behavior of UNTV altogether. One prime example might be to add support for different remotes. For example, if you wanted to add support for using an AppleTV remote via an IR module for the Raspberry Pi, you would need to hook into UNTV&#39;s <code>Remote</code> API.</p>
+<p>In this case, you create your extension just as you normally would, but the function that you export from your <code>main</code> script only gets executed once at runtime. For example:</p>
+<pre><code class="lang-coffeescript"><span class="built_in">module</span>.<span class="function"><span class="title">exports</span> = <span class="params">(env)</span> -&gt;</span>
+  <span class="comment"># do crazy voodoo magic to get IR input</span>
+  ir_remote = magicallyGetAppleTVRemote()
+  <span class="comment"># then just force the remote to emit it's normal set of events</span>
+  ir_remote.<span class="literal">on</span> <span class="string">"input"</span>, <span class="function"><span class="params">(button)</span> -&gt;</span>
+    <span class="keyword">switch</span> button
+      <span class="keyword">when</span> <span class="string">"left"</span> <span class="keyword">then</span> env.remote.emit <span class="string">"scroll:left"</span>
+      <span class="keyword">when</span> <span class="string">"right"</span> <span class="keyword">then</span> env.remote.emit <span class="string">"scroll:right"</span>
+      <span class="keyword">when</span> <span class="string">"up"</span> <span class="keyword">then</span> env.remote.emit <span class="string">"scroll:up"</span>
+      <span class="keyword">when</span> <span class="string">"down"</span> <span class="keyword">then</span> env.remote.emit <span class="string">"scroll:down"</span>
+      <span class="keyword">when</span> <span class="string">"select"</span> <span class="keyword">then</span> env.remote.emit <span class="string">"go:select"</span>
+</code></pre>
+</div></div><footer><div class="dark-overlay"><div class="constrain"><ul class="left"><li><a href="/api.html">API Documentation</a></li><li><a href="https://github.com/untv">Fork us on Github</a></li><li><a href="/donate.html">Support Development</a></li></ul><p class="right"><a href="https://github.com/gordonwritescode">A thing by Gordon Hall</a></p></div></div></footer></body></html>

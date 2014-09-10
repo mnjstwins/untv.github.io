@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>UNTV - Free Your Media</title><link rel="stylesheet" href="/styles/vendor/monokai.css"><script type="text/javascript" src="/scripts/vendor/highlight.min.js"></script><link rel="stylesheet" type="text/css" href="/styles/fonts.css"><link rel="stylesheet" type="text/css" href="/styles/main.css"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-49326509-1', 'untvapp.com');
+ga('send', 'pageview');</script><script type="text/javascript" src="/scripts/vendor/jquery-2.1.0.min.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body><header id="main"><div class="dark-overlay"><h1 class="constrain"><a href="/"><img src="/assets/images/untv-logo-white.svg" alt="UNTV"></a></h1></div></header><div class="constrain"><nav class="back"><a href="/api.html">Back to Contents</a></nav><div class="markdown"><h1 id="settings-registry-api">Settings Registry API</h1>
+<p>Extensions will often want to remember some sort of user data whether it&#39;s authentication tokens for a remote API or simple configuration preferences. In an effort to standardize the way extensions can define options the user may configure, we created the <code>SettingsRegistry</code> class.</p>
+<p>The <code>GlobalMenu</code> creates a single instance of this class before any extensions are loaded. During extension registration, the extension manifest file gets fed to the <code>SettingsRegistry</code>, where it parses the <code>config</code> property to determine which settings you have defined as <strong>user configurable</strong> (<em>see writing-configurable-extensions.md</em>). </p>
+<p>The <code>SettingsRegistry</code> instance uses a <code>localStorage</code> adapter to sync changes made to the setting and first looks for the value to your configuration key there (else your specified default is used). Then the value in your configuration is replaced. So for example if my extension&#39;s config is defined like so:</p>
+<pre><code class="lang-json">{
+    "<span class="attribute">config</span>": <span class="value">{
+        "<span class="attribute">debug_mode</span>": <span class="value">{
+            "<span class="attribute">register</span>": <span class="value"><span class="literal">true</span></span>,
+            "<span class="attribute">default</span>": <span class="value"><span class="literal">false</span></span>,
+            "<span class="attribute">is_toggle</span>": <span class="value"><span class="literal">true</span>
+        </span>}
+    </span>}
+</span>}
+</code></pre>
+<p>After passing through the <code>SettingsRegistry</code>, it get&#39;s provided to the extension as:</p>
+<pre><code class="lang-json">{
+    "<span class="attribute">config</span>": <span class="value">{
+        "<span class="attribute">debug_mode</span>": <span class="value"><span class="literal">false</span>
+    </span>}
+</span>}
+</code></pre>
+<p>Unless, of course, the user has changed it via the Settings Extension. </p>
+<blockquote>
+<p>The bundled Settings Extension provides the global interface for modifying configuration for all extensions that are registered in this way. It does this by getting &quot;privileged&quot; context from the <code>GlobalMenu</code> (by passing the settings for all extensions with the <code>ExtensionEnvironment</code> object).</p>
+</blockquote>
+<h2 id="class-setting-key-spec-">Class: Setting(key, spec)</h2>
+<p>Represents a single configurable value that is stored and recalled.</p>
+<h4 id="spec">Spec</h4>
+<ul>
+<li>register: <code>Boolean</code> - Indicates to the <code>SettingsRegistry</code> that this option is configurable</li>
+<li>default: <code>Mixed</code> - The default value for this setting</li>
+<li>options: <code>Array</code> - Possible values for this option or use <code>[&quot;*&quot;]</code> for any</li>
+<li>is_toggle: <code>Boolean</code> - Whether or not this setting is simply on/off</li>
+<li>description: <code>String</code> - Human-friendly description of setting (shown in Settings Extension) - defaults to <code>key</code></li>
+</ul>
+<h4 id="core-methods">Core Methods</h4>
+<h5 id="toggle-">toggle()</h5>
+<p>If the instance&#39;s <code>is_toggle</code> is <code>true</code>, this set the value of the instance to the inverse of it&#39;s current value.</p>
+<h5 id="set-value-">set(value)</h5>
+<p>Sets the value of the instance to the indicated <code>value</code> or if none is specified it is reset to it&#39;s <code>default</code>. This value is automatically persisted if a <code>persistence_key</code> exists.</p>
+<h5 id="persistto-key-">persistTo(key)</h5>
+<p>Sets the instance&#39;s <code>persistence_key</code> for the value.</p>
+<h2 id="class-settingsregistry-storage_namespace-">Class: SettingsRegistry(storage_namespace)</h2>
+<p>Creates a sort of &quot;registry&quot; for <code>Setting</code>s that are defined via the specification documented in <em>writing-configurable-extensions.md</em>. The <code>storage_namespace</code> is required for using the built-in persistence adapter.</p>
+<h4 id="core-methods">Core Methods</h4>
+<h5 id="register-extension_manifest-">register(extension_manifest)</h5>
+<p>Registers an extension&#39;s settings and transforms the configuration to represent user-modified values before the extension is loaded.</p>
+<h5 id="resetdefaults-">resetDefaults()</h5>
+<p>Resets all extensions configuration back to their default values.</p>
+</div></div><footer><div class="dark-overlay"><div class="constrain"><ul class="left"><li><a href="/api.html">API Documentation</a></li><li><a href="https://github.com/untv">Fork us on Github</a></li><li><a href="/donate.html">Support Development</a></li></ul><p class="right"><a href="https://github.com/gordonwritescode">A thing by Gordon Hall</a></p></div></div></footer></body></html>

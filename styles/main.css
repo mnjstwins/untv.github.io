@@ -1,0 +1,259 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: Ubuntu;
+}
+
+h1 {
+  font-family: UbuntuCondensed;
+  font-size: 42px;
+  margin: 24px 0;
+  color: #800000;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e2e2e2;
+  font-weight: normal;
+  clear: left;
+}
+
+p {
+  line-height: 26px;
+}
+
+blockquote {
+  font-style: italic;
+  color: #333;
+  border-left: 4px solid #e2e2e2;
+  padding: 0 0 0 24px;
+  font-size: 15px;
+}
+
+.blockquote {
+  line-height: 26px;
+  padding: 12px;
+  background: #f1f1f1;
+  border-radius: 4px;
+  color: #333;
+  text-shadow: 0 1px 0 #fff;
+}
+
+nav.back {
+  margin: 24px 0 12px 0;
+  border-radius: 4px;
+  background: #f1f1f1;
+  padding: 12px;
+  float: left;
+}
+
+nav.back a {
+  color: #333;
+  text-decoration: none;
+}
+
+nav.back a:hover {
+  text-decoration: underline;
+}
+
+nav.back a::before {
+  content:  '\2190';
+}
+
+ul#docs {
+  list-style-type: square;
+  margin-bottom: 24px;
+}
+
+ul#docs li {
+  margin: 8px 0;
+  font-size: 18px;
+}
+
+ul#docs a {
+  text-decoration: none;
+  color: rgb(0,25,55);
+}
+
+ul#docs a:hover {
+  text-decoration: underline;
+}
+
+#main {
+  background: url('../assets/images/dark-texture.png') top center repeat;
+  text-align: center;
+  overflow: hidden;
+  height: 140px;
+}
+
+#main img {
+  width: 405px;
+  position: relative;
+  top: -108px;
+}
+
+.dark-overlay {
+/*  background-color: rgba(0,25,55, 0.9);
+*/  box-shadow: inset 0 0 12px #000;
+  overflow: hidden;
+}
+
+.constrain {
+  width: 620px;
+  margin: auto;
+}
+
+.about {
+  font-size: 32px;
+  font-family: UbuntuCondensed;
+  color: #666;
+  text-align: center;
+  line-height: 44px;
+  color: #800000;
+}
+
+strong {
+  font-family: Ubuntu;
+}
+
+#download {
+  margin: 12px;
+  text-align: center;
+  padding: 12px;
+}
+
+#download a {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 3px;
+  background-color: #202020;
+  border: 2px solid #202020;
+  color: #fff;
+  text-decoration: none;
+  font-size: 22px;
+  margin: 0 12px;
+}
+
+#download a:hover {
+  background-color: #800000;
+  border-color: #800000;
+  color: #fff;
+}
+
+#download span {
+  text-transform: uppercase;
+  font-family: UbuntuCondensed;
+  font-size: 18px;
+}
+
+#features {
+  list-style-type: none;
+  margin: 12px 0 24px 0;
+  padding: 12px 0;
+  border-top: 1px solid #e2e2e2;
+}
+
+#features li {
+  overflow: hidden;
+  margin: 24px 0;
+  padding: 24px;
+}
+
+#features img {
+  width: 160px;
+  height: 160px;
+  margin: 0 12px;
+}
+
+#features header {
+  font-size: 26px;
+  font-family: Ubuntu;
+  font-weight: bold;
+  color: #800000;
+}
+
+#features p {
+  margin: 48px 0 0 0;
+  font-size: 18px;
+  line-height: 28px;
+}
+
+#features .right > img {
+  float: right;
+  margin-right: 0;
+}
+
+#features .left {
+  border-radius: 4px;
+  background-color: #f1f1f1;
+}
+
+#features .left > img {
+  float: left;
+  margin-left: 0;
+}
+
+#features .right > header {
+  float: left;
+}
+
+#features .left > header {
+  float: right;
+}
+
+#features .right > p {
+  clear: left;
+  text-align: left;
+}
+
+#features .left > p {
+  clear: right;
+  text-align: right;
+}
+
+footer {
+  background: url('../assets/images/dark-texture.png') top center repeat;
+  padding: 0;
+  color: #fff;
+  overflow: hidden;
+}
+
+footer .left {
+  float: left;
+}
+
+footer a {
+  color: #fff;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+footer .right {
+  float: right;
+}
+
+footer .right li {
+
+}
+
+footer .right a {
+  display: block;
+  padding: 12px;
+  margin: 12px;
+  background-color: #fff;
+  color: #800000;
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+footer li {
+  margin: 6px 0;
+}
+
+.qr {
+  text-align: center;
+}
+
+.center {
+  text-align: center;
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>UNTV - Free Your Media</title><link rel="stylesheet" href="/styles/vendor/monokai.css"><script type="text/javascript" src="/scripts/vendor/highlight.min.js"></script><link rel="stylesheet" type="text/css" href="/styles/fonts.css"><link rel="stylesheet" type="text/css" href="/styles/main.css"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-49326509-1', 'untvapp.com');
+ga('send', 'pageview');</script><script type="text/javascript" src="/scripts/vendor/jquery-2.1.0.min.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body><header id="main"><div class="dark-overlay"><h1 class="constrain"><a href="/"><img src="/assets/images/untv-logo-white.svg" alt="UNTV"></a></h1></div></header><div class="constrain"><h1>API Documentation</h1><p class="blockquote">Welcome, hacker! Here you can find resources for learning about how to 
+develop extensions and themes for UNTV. These are living documents and may 
+change often. If you discover any gaps, please feel free to fork this site 
+on GitHub and send a pull request.</p><h1>Contents</h1><ul id="docs"><li><a href="/documentation/about-settings-registry.html">Settings Registry API</a></li><li><a href="/documentation/architecture-and-global-menu.html">Architecture and the Global Menu</a></li><li><a href="/documentation/authoring-extensions.html">Authoring and Modifying Extensions</a></li><li><a href="/documentation/bundled-extensions.html">Bundled Extensions</a></li><li><a href="/documentation/extending-the-remote.html">Extending the Remote</a></li><li><a href="/documentation/sending-media-to-player.html">Sending Media to the Player</a></li><li><a href="/documentation/showing-notifications.html">Notifications API</a></li><li><a href="/documentation/using-gui-kit.html">Using the GUI Kit to Build Extensions</a></li><li><a href="/documentation/writing-configurable-extensions.html">Writing Configurable Extensions</a></li></ul><h1 id="quick-start">Quick Start</h1>
+<p>Since UNTV aims to provide support for as many codecs as possible, it uses a custom build of <a href="https://github.com/rogerwang/node-webkit">Node-Webkit</a> which I have compiled for linux64, darwin32, and win32. You may, however, use the upstream builds of Node-Webkit, but you will sacrifice playback support for just about everything except for <code>.ogg</code> and <code>.webm</code>. </p>
+<p>Clone the repository:</p>
+<pre><code>git clone https://github.com/untv/untv.git
+</code></pre><p>Install dependencies using Node Package Manager:</p>
+<pre><code>cd untv &amp;&amp; sudo npm install
+</code></pre><p>Make sure you have CoffeeScript installed globally (we use <code>cake</code> for tasks):</p>
+<pre><code>sudo npm install coffee-script -g
+</code></pre><p>Run <code>cake setup</code> from the project root to download your platform&#39;s custom build of node-webkit and unpack it to the <code>bin/</code> directory.</p>
+<blockquote>
+<p>Alternatively download the custom build of node-webkit here: 
+<a href="https://file.ac/s4Lt3Vo6rls/">https://file.ac/s4Lt3Vo6rls/</a>
+Then, unzip and place contents in the <code>bin/nw-0.8.4-custom</code> directory.</p>
+</blockquote>
+<p>Run <code>cake start</code> from the project root to launch UNTV.</p>
+<p>Run <code>cake build</code> from the project root to bundle a distributable release for your platform.</p>
+</div><footer><div class="dark-overlay"><div class="constrain"><ul class="left"><li><a href="/api.html">API Documentation</a></li><li><a href="https://github.com/untv">Fork us on Github</a></li><li><a href="/donate.html">Support Development</a></li></ul><p class="right"><a href="https://github.com/gordonwritescode">A thing by Gordon Hall</a></p></div></div></footer></body></html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>UNTV - Free Your Media</title><link rel="stylesheet" href="/styles/vendor/monokai.css"><script type="text/javascript" src="/scripts/vendor/highlight.min.js"></script><link rel="stylesheet" type="text/css" href="/styles/fonts.css"><link rel="stylesheet" type="text/css" href="/styles/main.css"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-49326509-1', 'untvapp.com');
+ga('send', 'pageview');</script><script type="text/javascript" src="/scripts/vendor/jquery-2.1.0.min.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body><header id="main"><div class="dark-overlay"><h1 class="constrain"><a href="/"><img src="/assets/images/untv-logo-white.svg" alt="UNTV"></a></h1></div></header><div class="constrain"><nav class="back"><a href="/api.html">Back to Contents</a></nav><div class="markdown"><h1 id="sending-media-to-the-player">Sending Media to the Player</h1>
+<p>Media playback is handled by an instance of <code>Player</code> that gets instantiated in <code>untv.coffee</code>. This instance is passed to the <code>GlobalMenu</code> and from there distibuted out to all non-passive extensions.</p>
+<p>The player is automatically subscribed to a set of events from the <code>Remote</code> instance passed to it. This set of events is all events that are part of the &quot;player:*&quot; namespace. In addition, the player is subscribed to &quot;menu:toggle&quot;, so it can be paused automatically, when the menu is opened.</p>
+<h2 id="events">Events</h2>
+<p>The <code>Player</code> class is an <code>EventEmitter</code> and publishes a few events that may be of use, however, you will likely only use a few of the core methods.</p>
+<h3 id="event-player-seek-">Event: &quot;player:seek&quot;</h3>
+<p>Fired when the user is seeking through the currently playing media, passing along with it the timestamp for each seek event. This may be useful for updating a custom seeker control or similar.</p>
+<h2 id="core-methods">Core Methods</h2>
+<h4 id="play-source-media_type-">play(source, media_type)</h4>
+<p>Sends the file at <code>source</code> to the player for playback. Specifiy a <code>media_type</code> of either &quot;video&quot; or &quot;audio&quot; to inform the player instance whether or not it needs to steal space in the interface.</p>
+<h4 id="pause-minimize-">pause(minimize)</h4>
+<p>Pauses the currently playing media. If the <code>minimize</code> flag is set, then if the player is currently visible, it will be hidden until the next time <code>play()</code> is called.</p>
+<h4 id="next-">next()</h4>
+<p>Performs a <code>seek()</code> forward by the default <code>seek_increment</code>.</p>
+<h4 id="prev-">prev()</h4>
+<p>Performs a <code>seek()</code> backward by the default <code>seek_increment</code>.</p>
+<h4 id="seek-time-">seek(time)</h4>
+<p>Moves the current position of playback to the specified <code>time</code>.</p>
+<h2 id="playlists">Playlists</h2>
+<p>The <code>Player</code> class exposes a <code>playlist</code> property which contains a subset of methods used for managing a playlist. Playlists can be any length of items with any combination of media types.</p>
+<h4 id="add-item-media_type-">add(item, media_type)</h4>
+<p>Adds the specified <code>item</code> (source path) with the specified <code>media_type</code> to the end of the playlist.</p>
+<h4 id="remove-item-">remove(item)</h4>
+<p>Removes the specified <code>item</code> (source path) from the playlist.</p>
+<h4 id="next-">next()</h4>
+<p>Skips to the next item in the playlist.</p>
+<h4 id="prev-">prev()</h4>
+<p>Skips to the previous item in the playlist.</p>
+<h4 id="empty-">empty()</h4>
+<p>Removes all items from the playlist.</p>
+<h2 id="example">Example</h2>
+<p>Below is a basic example of how you might read the contents of a directorys and send the first movie file media to the player (a rather arbitrary and unlikely use case). </p>
+<pre><code class="lang-coffeescript"><span class="built_in">module</span>.<span class="function"><span class="title">exports</span> = <span class="params">(env)</span> -&gt;</span>
+    contents = fs.readdirSync <span class="string">"path/to/movies"</span>
+    <span class="keyword">for</span> file <span class="keyword">in</span> contents
+        <span class="keyword">if</span> path.extname(file) <span class="keyword">is</span> <span class="string">".mkv"</span>
+            <span class="keyword">return</span> env.player.play(file, <span class="string">"video"</span>)
+</code></pre>
+</div></div><footer><div class="dark-overlay"><div class="constrain"><ul class="left"><li><a href="/api.html">API Documentation</a></li><li><a href="https://github.com/untv">Fork us on Github</a></li><li><a href="/donate.html">Support Development</a></li></ul><p class="right"><a href="https://github.com/gordonwritescode">A thing by Gordon Hall</a></p></div></div></footer></body></html>
