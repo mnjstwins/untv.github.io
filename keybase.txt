@@ -1,0 +1,72 @@
+==================================================================
+https://keybase.io/gordonhall
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://untvapp.com
+  * I am gordonhall (https://keybase.io/gordonhall) on keybase.
+  * I have a public key with fingerprint 71F5 1E38 3CC3 9AF1 4DC8  174F 3099 CB65 8C75 BD44
+
+To claim this, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "fingerprint": "71f51e383cc39af14dc8174f3099cb658c75bd44",
+            "host": "keybase.io",
+            "key_id": "3099cb658c75bd44",
+            "uid": "a52322c1c3b2420e8b3ca4d93289b700",
+            "username": "gordonhall"
+        },
+        "revoke": {
+            "sig_ids": [
+                "dfb8d57a85ca03bc98f1c2ab6bd03786376770ffea5656c33a7b799ca05eb5da0f"
+            ]
+        },
+        "service": {
+            "hostname": "untvapp.com",
+            "protocol": "http:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1410370217,
+    "expire_in": 157680000,
+    "prev": "69a585c5b3c996b5bc80cc7a86b659611770cb3c7b576a65583732d86199a97b",
+    "seqno": 18,
+    "tag": "signature"
+}
+
+with the aforementioned key, yielding the PGP signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v1.0.3
+Comment: https://keybase.io/crypto
+
+yMIqAnicbVJbSBRRGF4rixRDukpk1LRG5SIzc2bmzGwXuyOoXWChe+s5Z86sU+7M
+Oju7KRE9xNKFyogitBfFCrYgxJekIlIio6tFaPeLdiHIxCKLSOiM1Fvn5XD+//u/
+y8+5kTPal5XRl+2HpfBHKONO+9qEL5R7KL2bw7ZeywV3czvpyGWYVoQ6Mce0XC7I
+QcGQBQpUQAjQkCFIOlEFKBmA1zSCFVklUMa6JHEBrtKOexOMBqM4LTJtVmOPsKmz
+6n/wiZEGkkUgikQgAIuSyFMVA4IkXQOiqmHI8x4wTh0LRSlDR2xHt61KVFXF7Qlw
+Dk3aO6lnOm5GmE6cC27hdAOrugyRKhPEA0w01RCIiLCCdR5AVQFQgZA3DIpkRVYI
+AAhiyMwhXqZY1hFvcNsYN9NMmmSE3Av2Vz9huUkUixURO8qMxRzbtYldxRqVrhsL
+ep7c2pgH3EVx+C9FGJuWzpbKBpLUiZu2xQUFhiSu6XEKksB88aIAAxytiZkODZse
+QoaKyrPjydAko1Q0JLNQMluQpilYxkTlCWFBFbZXTREEFouwJsRsFCmyrAIIRF1V
+BE1DGsScF6rashm3ynyiCONke7OQm3Aot6fj+tYxvows39jMUd6/8GWNz/33W7QX
+437nHBmel17Vedg3/cBLs6Wta1L21OdCYM6Ck2Prvw7l7PV/2gdSqdyGzeWfb21I
+li+XfuEZl/TZ1SsmLLzbu8JfM/7bkn6zFGrVPzcUXztR0llUV9bVYw43pF8XfFlm
+3fsYjd3cvnRpc3f28fu1H+Yf62/Km6IPPmoT3lxFi6siz9b11E9a0KYeOp2atv/x
+jrzyYTWvxDAqKo6nQk9vR59cvTJx5cd3Hzp6D7ZmPOwKxU9lvqrxl3U0zZTe4u9z
+Lg+ee963uhUCKf+iVLx+Y+GDo6+Gzm3uHMh8/zi/IP9aybFIRV1fcV1Bd8viTdbA
+ojOTH/jPN85sbF4zKz23vfDCl7K9vWf/AFBwK6s=
+=fkhC
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/gordonhall
+
+==================================================================
+
